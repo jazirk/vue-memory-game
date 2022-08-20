@@ -1,7 +1,7 @@
 <template>
   <header><em>Memory Game</em></header>
   <div class="container">
-    <Button v-if="!start" class="btn-start" @click="start = true">Start</Button>
+    <button v-if="!start" class="btn-start" @click="start = true">Start</button>
     <Block
       v-else
       v-for="(number, index) in randomNumber"

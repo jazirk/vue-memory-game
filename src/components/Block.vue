@@ -31,7 +31,7 @@ console.log(props.disableClick);
 const checkedNumber = ref(0);
 
 const onBlockClick = () => {
-  checkedNumber.value = props.msg;
+  checkedNumber.value = props.value;
   emits("onClick", checkedNumber.value, props.index);
 };
 
