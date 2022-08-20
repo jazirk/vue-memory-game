@@ -1,5 +1,7 @@
 # memory-game
 
+[Live demo](https://vue-memory-game-rust.vercel.app/
+
 ## Project setup
 ```
 npm install
