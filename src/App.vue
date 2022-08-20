@@ -62,7 +62,7 @@ const onBlockClick = (val) => {
       num2.value = null;
       disableClick.value = false;
       clearTimeout(timer);
-    }, 3000);
+    }, 1500);
   } else {
     //
   }
