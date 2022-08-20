@@ -1,7 +1,7 @@
 <template>
   <Transition>
     <div
-      :class="[{ block: true, disable: disableClick, visbility: disabled }]"
+      :class="[{ block: true, disable: disableClick, matched: card?.matched }]"
       @click="onBlockClick"
     >
       {{ checkedNumber || "" }}
@@ -13,9 +13,8 @@
 import { ref, watch } from "vue";
 // eslint-disable-next-line no-undef
 const props = defineProps({
-  value: {
-    type: Number,
-    default: 0,
+  card: {
+    type: Object,
   },
   disabled: {
     type: Boolean,
@@ -27,12 +26,12 @@ const props = defineProps({
 // eslint-disable-next-line no-undef
 const emits = defineEmits(["onClick"]);
 
-console.log(props.disableClick);
-const checkedNumber = ref(0);
+const checkedNumber = ref(null);
 
+console.log(props.card);
 const onBlockClick = () => {
-  checkedNumber.value = props.value;
-  emits("onClick", checkedNumber.value, props.index);
+  checkedNumber.value = props.card?.value;
+  emits("onClick", props.card);
 };
 
 watch(
@@ -66,7 +65,7 @@ watch(
   pointer-events: none;
 }
 
-.visbility {
+.matched {
   visibility: hidden;
 }
 

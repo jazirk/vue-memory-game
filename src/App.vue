@@ -4,10 +4,9 @@
     <button v-if="!start" class="btn-start" @click="start = true">Start</button>
     <Block
       v-else
-      v-for="(number, index) in randomNumber"
+      v-for="(card, index) in randomNumbers"
       :key="index"
-      :value="number"
-      :disabled="disabled[index]"
+      :card="card"
       :disableClick="disableClick"
       @onClick="onBlockClick"
     />
@@ -20,14 +19,11 @@ import { computed, ref, watch } from "vue";
 
 const start = ref(false);
 
-const num1 = ref(null);
-const num2 = ref(null);
-
 const disableClick = ref(false);
 
-const disabled = ref(new Array(18).fill(false));
+const flippedCards = ref([]);
 
-const randomNumber = computed(() => {
+const randomNumbers = computed(() => {
   const nums1 = new Set();
   while (nums1.size !== 18) {
     nums1.add(Math.floor(Math.random() * 18) + 1);
@@ -38,33 +34,26 @@ const randomNumber = computed(() => {
     nums2.add(Math.floor(Math.random() * 18) + 1);
   }
 
-  console.log(nums1, nums2);
-  return [...nums1, ...nums2];
+  return [...nums1, ...nums2].map((num) => {
+    return {
+      value: num,
+      matched: false,
+    };
+  });
 });
 
-const onBlockClick = (val) => {
-  if (!num1.value && !num2.value) {
-    num1.value = val;
-  } else if (!num2.value) {
-    num2.value = val;
+const onBlockClick = (card) => {
+  if (flippedCards.value.length < 2) flippedCards.value.push(card);
+  if (flippedCards.value.length === 2) {
     disableClick.value = true;
     let timer = setTimeout(() => {
-      console.log(num1.value);
+      if (flippedCards.value[0].value === flippedCards.value[1].value)
+        flippedCards.value.forEach((_card) => (_card.matched = true));
 
-      if (num1.value === num2.value) {
-        randomNumber.value.forEach((num, index) => {
-          if (num === num1.value || num === num2.value) {
-            disabled.value[index] = true;
-          }
-        });
-      }
-      num1.value = null;
-      num2.value = null;
+      flippedCards.value = [];
       disableClick.value = false;
       clearTimeout(timer);
     }, 1500);
-  } else {
-    //
   }
 };
 
